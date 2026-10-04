@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ক্যামেরা ইনভেন্টরি ও সেলস ম্যানেজার</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-100 text-slate-800 p-4 md:p-8">
+
+  <div class="max-w-6xl mx-auto space-y-6">
+    <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">
+      📷 ক্যামেরা ইনভেন্টরি ও বিক্রয় হিসাব
+    </h1>
+
+    <!-- Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-blue-500">
+        <h3 class="text-sm text-slate-500 font-semibold">মোট স্টক (ক্যামেরা)</h3>
+        <div class="text-2xl font-bold text-slate-800" id="totalStockDisplay">0 টি</div>
+      </div>
+      <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-green-500">
+        <h3 class="text-sm text-slate-500 font-semibold">মোট নগদ আদায় (Cash)</h3>
+        <div class="text-2xl font-bold text-green-600" id="totalCashDisplay">৳ 0</div>
+      </div>
+      <div class="bg-white p-5 rounded-lg shadow-sm border-l-4 border-red-500">
+        <h3 class="text-sm text-slate-500 font-semibold">মোট বকেয়া (Due)</h3>
+        <div class="text-2xl font-bold text-red-600" id="totalDueDisplay">৳ 0</div>
+      </div>
+    </div>
+
+    <!-- Forms -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Stock Entry Form -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+        <h2 class="text-lg font-bold text-blue-600 mb-4 border-b pb-2">স্টকে ক্যামেরা যোগ করুন</h2>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-sm font-semibold mb-1">ক্যামেরার নাম / মডেল</label>
+            <input type="text" id="camModel" placeholder="যেমন: Canon EOS 200D" class="w-full border rounded p-2 focus:outline-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">পরিমাণ (Qty)</label>
+            <input type="number" id="camQty" placeholder="যেমন: 5" min="1" class="w-full border rounded p-2 focus:outline-blue-500">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">বিক্রয়মূল্য (প্রতিটি ৳)</label>
+            <input type="number" id="camPrice" placeholder="যেমন: 55000" min="0" class="w-full border rounded p-2 focus:outline-blue-500">
+          </div>
+          <button onclick="addStock()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded transition">স্টকে যোগ করুন</button>
+        </div>
+      </div>
+
+      <!-- Sales Form -->
+      <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+        <h2 class="text-lg font-bold text-green-600 mb-4 border-b pb-2">ক্যামেরা বিক্রি করুন</h2>
+        <div class="space-y-3">
+          <div>
+            <label class="block text-sm font-semibold mb-1">ক্যামেরা সিলেক্ট করুন</label>
+            <select id="saleCamSelect" class="w-full border rounded p-2 focus:outline-green-500"></select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">ক্রেতার নাম</label>
+            <input type="text" id="customerName" placeholder="ক্রেতার নাম" class="w-full border rounded p-2 focus:outline-green-500">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">বিক্রির পরিমাণ (Qty)</label>
+            <input type="number" id="saleQty" value="1" min="1" class="w-full border rounded p-2 focus:outline-green-500">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold mb-1">নগদ জমা (Cash Received ৳)</label>
+            <input type="number" id="cashReceived" placeholder="নগদ কত জমা দিল" min="0" class="w-full border rounded p-2 focus:outline-green-500">
+          </div>
+          <button onclick="processSale()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded transition">বিক্রি সম্পন্ন করুন</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inventory Table -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+      <h2 class="text-md font-bold p-4 bg-slate-50 border-b">বর্তমান স্টক তালিকা</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-100 text-slate-600 text-xs uppercase">
+              <th class="p-3">মডেল</th>
+              <th class="p-3">স্টক পরিমাণ</th>
+              <th class="p-3">বিক্রয়মূল্য</th>
+            </tr>
+          </thead>
+          <tbody id="stockTableBody" class="divide-y text-sm"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Sales Table -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+      <h2 class="text-md font-bold p-4 bg-slate-50 border-b">বিক্রয় ও রিটার্ন হিস্ট্রি</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-slate-100 text-slate-600 text-xs uppercase">
+              <th class="p-3">তারিখ</th>
+              <th class="p-3">ক্রেতা</th>
+              <th class="p-3">মডেল</th>
+              <th class="p-3">পরিমাণ</th>
+              <th class="p-3">মোট দাম</th>
+              <th class="p-3">নগদ</th>
+              <th class="p-3">বকেয়া</th>
+              <th class="p-3">একশন</th>
+            </tr>
+          </thead>
+          <tbody id="salesTableBody" class="divide-y text-sm"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let inventory = JSON.parse(localStorage.getItem('cam_inv')) || [];
+    let sales = JSON.parse(localStorage.getItem('cam_sales')) || [];
+
+    function saveData() {
+      localStorage.setItem('cam_inv', JSON.stringify(inventory));
+      localStorage.setItem('cam_sales', JSON.stringify(sales));
+      renderAll();
+    }
+
+    function addStock() {
+      const model = document.getElementById('camModel').value.trim();
+      const qty = parseInt(document.getElementById('camQty').value);
+      const price = parseFloat(document.getElementById('camPrice').value);
+
+      if (!model || isNaN(qty) || isNaN(price) || qty <= 0 || price < 0) {
+        alert('সঠিক তথ্য দিয়ে ঘরগুলো পূরণ করুন');
+        return;
+      }
+
+      const existing = inventory.find(i => i.model.toLowerCase() === model.toLowerCase());
+      if (existing) {
+        existing.qty += qty;
+        existing.price = price;
+      } else {
+        inventory.push({ id: Date.now(), model, qty, price });
+      }
+
+      document.getElementById('camModel').value = '';
+      document.getElementById('camQty').value = '';
+      document.getElementById('camPrice').value = '';
+      saveData();
+    }
+
+    function processSale() {
+      const select = document.getElementById('saleCamSelect');
+      const camId = parseInt(select.value);
+      const customer = document.getElementById('customerName').value.trim();
+      const qty = parseInt(document.getElementById('saleQty').value);
+      const cash = parseFloat(document.getElementById('cashReceived').value) || 0;
+
+      if (!camId) {
+        alert('ক্যামেরা সিলেক্ট করুন');
+        return;
+      }
+
+      const item = inventory.find(i => i.id === camId);
+      if (!item || item.qty < qty) {
+        alert('স্টকে পর্যাপ্ত ক্যামেরা নেই!');
+        return;
+      }
+
+      const totalPrice = item.price * qty;
+      const due = totalPrice - cash;
+
+      item.qty -= qty;
+
+      sales.unshift({
+        id: Date.now(),
+        camId: item.id,
+        model: item.model,
+        customer: customer || 'কাস্টমার',
+        qty: qty,
+        totalPrice: totalPrice,
+        cash: cash,
+        due: due > 0 ? due : 0,
+        returned: false,
+        date: new Date().toLocaleDateString('bn-BD')
+      });
+
+      document.getElementById('customerName').value = '';
+      document.getElementById('cashReceived').value = '';
+      document.getElementById('saleQty').value = '1';
+      saveData();
+    }
+
+    function returnItem(saleId) {
+      const sale = sales.find(s => s.id === saleId);
+      if (!sale || sale.returned) return;
+
+      if (confirm(`${sale.qty} টি ${sale.model} ক্যামেরা রিটার্ন নিয়ে স্টকে যোগ করতে চান?`)) {
+        sale.returned = true;
+        const item = inventory.find(i => i.id === sale.camId);
+        if (item) {
+          item.qty += sale.qty;
+        } else {
+          inventory.push({ id: sale.camId, model: sale.model, qty: sale.qty, price: sale.totalPrice / sale.qty });
+        }
+        saveData();
+      }
+    }
+
+    function renderAll() {
+      let totalStock = inventory.reduce((sum, item) => sum + item.qty, 0);
+      let totalCash = sales.reduce((sum, sale) => sale.returned ? sum : sum + sale.cash, 0);
+      let totalDue = sales.reduce((sum, sale) => sale.returned ? sum : sum + sale.due, 0);
+
+      document.getElementById('totalStockDisplay').innerText = `${totalStock} টি`;
+      document.getElementById('totalCashDisplay').innerText = `৳ ${totalCash.toLocaleString('bn-BD')}`;
+      document.getElementById('totalDueDisplay').innerText = `৳ ${totalDue.toLocaleString('bn-BD')}`;
+
+      const select = document.getElementById('saleCamSelect');
+      select.innerHTML = '<option value="">-- ক্যামেরা নির্বাচন করুন --</option>';
+      inventory.forEach(item => {
+        if (item.qty > 0) {
+          select.innerHTML += `<option value="${item.id}">${item.model} (${item.qty}টি আছে - ৳${item.price})</option>`;
+        }
+      });
+
+      const stockBody = document.getElementById('stockTableBody');
+      stockBody.innerHTML = inventory.length ? '' : '<tr><td colspan="3" class="p-3 text-center text-slate-400">স্টকে কোনো ক্যামেরা নেই</td></tr>';
+      inventory.forEach(item => {
+        stockBody.innerHTML += `
+          <tr>
+            <td class="p-3 font-semibold">${item.model}</td>
+            <td class="p-3">${item.qty} টি</td>
+            <td class="p-3">৳ ${item.price.toLocaleString('bn-BD')}</td>
+          </tr>
+        `;
+      });
+
+      const salesBody = document.getElementById('salesTableBody');
+      salesBody.innerHTML = sales.length ? '' : '<tr><td colspan="8" class="p-3 text-center text-slate-400">এখনো কোনো বিক্রি হয়নি</td></tr>';
+      sales.forEach(sale => {
+        salesBody.innerHTML += `
+          <tr class="${sale.returned ? 'bg-red-50' : ''}">
+            <td class="p-3">${sale.date}</td>
+            <td class="p-3">${sale.customer}</td>
+            <td class="p-3 font-semibold">${sale.model}</td>
+            <td class="p-3">${sale.qty}</td>
+            <td class="p-3">৳ ${sale.totalPrice.toLocaleString('bn-BD')}</td>
+            <td class="p-3 text-green-600 font-semibold">৳ ${sale.cash.toLocaleString('bn-BD')}</td>
+            <td class="p-3 font-semibold ${sale.due > 0 && !sale.returned ? 'text-red-600' : ''}">৳ ${sale.due.toLocaleString('bn-BD')}</td>
+            <td class="p-3">
+              ${sale.returned 
+                ? '<span class="text-red-600 text-xs font-bold bg-red-100 px-2 py-1 rounded">রিটার্নড</span>' 
+                : `<button onclick="returnItem(${sale.id})" class="bg-amber-500 hover:bg-amber-600 text-white text-xs px-2 py-1 rounded">রিটার্ন</button>`
+              }
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
