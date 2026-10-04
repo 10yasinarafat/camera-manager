@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Camera ERP - Premium Inventory & Sales Manager</title>
-  <!-- Tailwind CSS & FontAwesome -->
+  <title>Camera Stock & Sales Manager</title>
+  <!-- Tailwind CSS & FontAwesome Icons -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,254 +12,208 @@
     body { font-family: 'Hind Siliguri', sans-serif; }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen p-3 md:p-8">
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
 
   <div class="max-w-7xl mx-auto space-y-6">
     
     <!-- Top Header -->
-    <div class="flex flex-col md:flex-row justify-between items-center bg-slate-800/80 backdrop-blur border border-slate-700 p-5 rounded-2xl shadow-xl">
+    <div class="flex justify-between items-center bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-xl">
       <div class="flex items-center gap-3">
-        <div class="bg-blue-600/20 p-3 rounded-xl border border-blue-500/30 text-blue-400">
-          <i class="fa-solid fa-camera-retro text-3xl"></i>
+        <div class="bg-blue-600/20 p-3 rounded-xl text-blue-400">
+          <i class="fa-solid fa-camera text-2xl"></i>
         </div>
         <div>
-          <h1 class="text-2xl font-bold text-white tracking-wide">ক্যামেরা ইনভেন্টরি ও ইআরপি ড্যাশবোর্ড</h1>
-          <p class="text-xs text-slate-400">স্টক, সিরিয়াল নম্বর, কাস্টম সেলস ও বকেয়া ট্র্যাকিং সফটওয়্যার</p>
+          <h1 class="text-xl font-bold text-white">Camera Inventory & Sales Management</h1>
+          <p class="text-xs text-slate-400">Buying, Selling, Serial Number & Due Manager</p>
         </div>
       </div>
-      <div class="mt-4 md:mt-0 flex gap-2">
-        <button onclick="exportData()" class="bg-slate-700 hover:bg-slate-600 text-xs text-slate-200 font-semibold px-4 py-2 rounded-xl border border-slate-600 transition flex items-center gap-2">
-          <i class="fa-solid fa-download"></i> ব্যাকআপ ডাউনলোড
-        </button>
-      </div>
     </div>
 
-    <!-- Executive Dashboard KPI Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      <!-- Stock Value -->
-      <div class="bg-gradient-to-br from-slate-800 to-slate-800/50 p-5 rounded-2xl border border-slate-700/80 shadow-lg relative overflow-hidden">
-        <div class="absolute -right-2 -bottom-2 text-slate-700/20 text-7xl"><i class="fa-solid fa-boxes-stacked"></i></div>
-        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">মোট স্টকের বাজারমূল্য</p>
+    <!-- Dashboard: ONLY 3 Cards as Requested -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      
+      <!-- Card 1: Total Stock Value -->
+      <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-lg">
+        <div class="flex justify-between items-center">
+          <p class="text-xs font-semibold text-slate-400 uppercase">Total Stock Value</p>
+          <i class="fa-solid fa-sack-dollar text-blue-400 text-xl"></i>
+        </div>
         <h3 class="text-2xl font-bold text-blue-400 mt-2" id="dashTotalValue">৳ 0</h3>
-        <p class="text-xs text-slate-500 mt-1" id="dashTotalQty">স্টক: 0 টি ক্যামেরা</p>
+        <p class="text-xs text-slate-500 mt-1">Stocker mot krito maler daam</p>
       </div>
 
-      <!-- Cash Collected -->
-      <div class="bg-gradient-to-br from-slate-800 to-slate-800/50 p-5 rounded-2xl border border-slate-700/80 shadow-lg relative overflow-hidden">
-        <div class="absolute -right-2 -bottom-2 text-slate-700/20 text-7xl"><i class="fa-solid fa-wallet"></i></div>
-        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">মোট নগদ ক্যাশ জমা</p>
-        <h3 class="text-2xl font-bold text-emerald-400 mt-2" id="dashTotalCash">৳ 0</h3>
-        <p class="text-xs text-emerald-500/80 mt-1"><i class="fa-solid fa-arrow-trend-up"></i> সংগৃহীত আসল ক্যাশ</p>
+      <!-- Card 2: Total Products in Stock -->
+      <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-lg">
+        <div class="flex justify-between items-center">
+          <p class="text-xs font-semibold text-slate-400 uppercase">Stock Products Count</p>
+          <i class="fa-solid fa-boxes-stacked text-emerald-400 text-xl"></i>
+        </div>
+        <h3 class="text-2xl font-bold text-emerald-400 mt-2" id="dashTotalQty">0 Ti</h3>
+        <p class="text-xs text-slate-500 mt-1">Bikkri-r jonno available camera</p>
       </div>
 
-      <!-- Total Due -->
-      <div class="bg-gradient-to-br from-slate-800 to-slate-800/50 p-5 rounded-2xl border border-slate-700/80 shadow-lg relative overflow-hidden">
-        <div class="absolute -right-2 -bottom-2 text-slate-700/20 text-7xl"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">মোট বকেয়া পাওনা (Due)</p>
+      <!-- Card 3: Total Due -->
+      <div class="bg-slate-800 p-5 rounded-2xl border border-slate-700 shadow-lg">
+        <div class="flex justify-between items-center">
+          <p class="text-xs font-semibold text-slate-400 uppercase">Total Due (Bokeya)</p>
+          <i class="fa-solid fa-hand-holding-dollar text-rose-400 text-xl"></i>
+        </div>
         <h3 class="text-2xl font-bold text-rose-400 mt-2" id="dashTotalDue">৳ 0</h3>
-        <p class="text-xs text-rose-400/80 mt-1" id="dashDueClientsCount">0 জন কাস্টমারের কাছে পাওনা</p>
+        <p class="text-xs text-slate-500 mt-1">Customer-der kache mot paona taka</p>
       </div>
 
-      <!-- Profit Summary -->
-      <div class="bg-gradient-to-br from-slate-800 to-slate-800/50 p-5 rounded-2xl border border-slate-700/80 shadow-lg relative overflow-hidden">
-        <div class="absolute -right-2 -bottom-2 text-slate-700/20 text-7xl"><i class="fa-solid fa-chart-line"></i></div>
-        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">মোট বিক্রয় (Total Sales)</p>
-        <h3 class="text-2xl font-bold text-amber-400 mt-2" id="dashTotalSalesVal">৳ 0</h3>
-        <p class="text-xs text-slate-500 mt-1" id="dashSoldQtyCount">বিক্রি হয়েছে: 0 টি</p>
-      </div>
     </div>
 
-    <!-- Forms Section -->
+    <!-- Buying & Selling Forms -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       
-      <!-- Stock Entry Form -->
-      <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur">
+      <!-- Stock Buying Form -->
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
         <div class="flex items-center gap-2 mb-4 border-b border-slate-700 pb-3 text-blue-400">
-          <i class="fa-solid fa-circle-plus text-lg"></i>
-          <h2 class="text-lg font-bold text-white">নতুন ক্যামেরা স্টকে ইনপুট করুন</h2>
+          <i class="fa-solid fa-cart-plus"></i>
+          <h2 class="text-lg font-bold text-white">Stock Entry (Buying Option)</h2>
         </div>
         
         <div class="space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Camera / Lens Model *</label>
+            <input type="text" id="inModel" placeholder="e.g. Canon EOS R6" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+          </div>
+
+          <div>
+            <label class="block text-xs text-slate-300 mb-1">Serial Number (S/N) *</label>
+            <input type="text" id="inSerial" placeholder="e.g. SN-8827391" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">ক্যামেরার নাম / মডেল *</label>
-              <input type="text" id="inModel" placeholder="যেমন: Sony Alpha A7 IV" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+              <label class="block text-xs text-slate-300 mb-1">Buying Price (Tk) *</label>
+              <input type="number" id="inBuyPrice" placeholder="150000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">সিরিয়াল নম্বর (Serial No / S/N) *</label>
-              <input type="text" id="inSerial" placeholder="যেমন: SN-987654321" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+              <label class="block text-xs text-slate-300 mb-1">Default Selling Price (Tk)</label>
+              <input type="number" id="inSellPrice" placeholder="175000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">কেনা দাম (Buying Price ৳) *</label>
-              <input type="number" id="inBuyPrice" placeholder="যেমন: 180000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-            </div>
-            <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">ডিফল্ট বেচা দাম (Selling Price ৳) *</label>
-              <input type="number" id="inSellPrice" placeholder="যেমন: 210000" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-            </div>
-          </div>
-
-          <button onclick="addStockItem()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition duration-200 shadow-lg shadow-blue-600/20">
-            <i class="fa-solid fa-plus-circle mr-1"></i> স্টকে সেভ করুন
+          <button onclick="addStock()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2.5 rounded-xl transition">
+            <i class="fa-solid fa-plus mr-1"></i> Add to Stock
           </button>
         </div>
       </div>
 
-      <!-- Sales Form (With Custom Price & Serial Selection) -->
-      <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 shadow-xl backdrop-blur">
+      <!-- POS Selling Form -->
+      <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
         <div class="flex items-center gap-2 mb-4 border-b border-slate-700 pb-3 text-emerald-400">
-          <i class="fa-solid fa-cart-shopping text-lg"></i>
-          <h2 class="text-lg font-bold text-white">ক্যামেরা বিক্রি করুন (POS)</h2>
+          <i class="fa-solid fa-cash-register"></i>
+          <h2 class="text-lg font-bold text-white">Sale Camera (Selling Option)</h2>
         </div>
 
         <div class="space-y-4">
           <div>
-            <label class="block text-xs font-medium text-slate-300 mb-1">স্টক থেকে ক্যামেরা নির্বাচন করুন (সিরিয়াল সহ) *</label>
-            <select id="saleCamSelect" onchange="autoFillPrice()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
-              <option value="">-- সিরিয়াল অনুযায়ী ক্যামেরা বেছে নিন --</option>
+            <label class="block text-xs text-slate-300 mb-1">Select Camera by Serial Number *</label>
+            <select id="saleSelect" onchange="autoPrice()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+              <option value="">-- Choose Stock Camera --</option>
             </select>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">ক্রেতার নাম *</label>
-              <input type="text" id="custName" placeholder="কাস্টমারের নাম" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+              <label class="block text-xs text-slate-300 mb-1">Customer Name *</label>
+              <input type="text" id="custName" placeholder="Name" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">ফোন নম্বর (ঐচ্ছিক)</label>
+              <label class="block text-xs text-slate-300 mb-1">Customer Phone</label>
               <input type="text" id="custPhone" placeholder="017xxxxxxxx" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">ফাইনাল বিক্রয়মূল্য (Custom Price ৳) *</label>
-              <input type="number" id="customSellPrice" placeholder="ইচ্ছেমতো বিক্রয়মূল্য বসান" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm font-semibold text-emerald-400 focus:outline-none focus:border-emerald-500">
+              <label class="block text-xs text-slate-300 mb-1">Selling Price (Custom Tk) *</label>
+              <input type="number" id="customPrice" placeholder="Price" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-emerald-400 font-semibold focus:outline-none focus:border-emerald-500">
             </div>
             <div>
-              <label class="block text-xs font-medium text-slate-300 mb-1">নগদ গ্রহণ (Cash Paid ৳)</label>
-              <input type="number" id="cashPaid" placeholder="কত ক্যাশ দিল" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+              <label class="block text-xs text-slate-300 mb-1">Cash Paid (Tk) *</label>
+              <input type="number" id="cashPaid" placeholder="Amount paid" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
             </div>
           </div>
 
-          <button onclick="processSale()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition duration-200 shadow-lg shadow-emerald-600/20">
-            <i class="fa-solid fa-check-circle mr-1"></i> বিক্রি ফাইনাল করুন
+          <button onclick="processSale()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-xl transition">
+            <i class="fa-solid fa-check mr-1"></i> Complete Sale
           </button>
         </div>
       </div>
 
     </div>
 
-    <!-- Customer Due Management Panel -->
-    <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 shadow-xl">
-      <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
-        <div class="flex items-center gap-2 text-rose-400">
-          <i class="fa-solid fa-users-viewfinder text-lg"></i>
-          <h2 class="text-lg font-bold text-white">কাস্টমার বকেয়া (Due) তালিকা ও পরিশোধ</h2>
-        </div>
-        <span class="text-xs bg-rose-500/10 text-rose-400 border border-rose-500/20 px-3 py-1 rounded-full" id="dueCountBadge">০ জনের বকেয়া বাকি</span>
-      </div>
-
+    <!-- Stock Table -->
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+      <h2 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2">Available Products in Stock</h2>
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
+        <table class="w-full text-left">
           <thead>
             <tr class="text-xs text-slate-400 border-b border-slate-700 bg-slate-900/50">
-              <th class="p-3">কাস্টমারের নাম</th>
-              <th class="p-3">ফোন</th>
-              <th class="p-3">ক্যামেরা ও সিরিয়াল</th>
-              <th class="p-3">বকেয়া পরিমাণ</th>
-              <th class="p-3">একশন</th>
+              <th class="p-3">Model</th>
+              <th class="p-3">Serial Number</th>
+              <th class="p-3">Buying Price</th>
+              <th class="p-3">Selling Price</th>
             </tr>
           </thead>
-          <tbody id="dueClientsTable" class="divide-y divide-slate-700/50 text-sm"></tbody>
+          <tbody id="stockTable" class="divide-y divide-slate-700 text-sm"></tbody>
         </table>
       </div>
     </div>
 
-    <!-- Current Stock Inventory Table -->
-    <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 shadow-xl">
-      <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
-        <div class="flex items-center gap-2 text-blue-400">
-          <i class="fa-solid fa-boxes-packing text-lg"></i>
-          <h2 class="text-lg font-bold text-white">বর্তমান স্টক ক্যামেরা তালিকা</h2>
-        </div>
-        <input type="text" id="searchStockInput" onkeyup="renderTables()" placeholder="সিরিয়াল বা মডেল দিয়ে খুঁজুন..." class="bg-slate-900 border border-slate-700 text-xs text-white px-3 py-1.5 rounded-lg focus:outline-none focus:border-blue-500">
-      </div>
-
+    <!-- Sales & Due Record Table -->
+    <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+      <h2 class="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2">Sales History & Due Ledger</h2>
       <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
+        <table class="w-full text-left">
           <thead>
             <tr class="text-xs text-slate-400 border-b border-slate-700 bg-slate-900/50">
-              <th class="p-3">মডেল</th>
-              <th class="p-3">সিরিয়াল নম্বর (S/N)</th>
-              <th class="p-3">ক্রয়মূল্য</th>
-              <th class="p-3">ডিফল্ট বিক্রয়মূল্য</th>
-              <th class="p-3">স্ট্যাটাস</th>
+              <th class="p-3">Customer</th>
+              <th class="p-3">Model & Serial</th>
+              <th class="p-3">Total Sale</th>
+              <th class="p-3">Cash Paid</th>
+              <th class="p-3">Due (Bokeya)</th>
+              <th class="p-3">Action</th>
             </tr>
           </thead>
-          <tbody id="stockTableBody" class="divide-y divide-slate-700/50 text-sm"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Sales & Returns History -->
-    <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-6 shadow-xl">
-      <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-4">
-        <div class="flex items-center gap-2 text-amber-400">
-          <i class="fa-solid fa-receipt text-lg"></i>
-          <h2 class="text-lg font-bold text-white">বিক্রয় ও রিটার্ন হিস্ট্রি</h2>
-        </div>
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="text-xs text-slate-400 border-b border-slate-700 bg-slate-900/50">
-              <th class="p-3">তারিখ</th>
-              <th class="p-3">কাস্টমার</th>
-              <th class="p-3">ক্যামেরা ও S/N</th>
-              <th class="p-3">বিক্রয়মূল্য</th>
-              <th class="p-3">ক্যাশ গ্রহণ</th>
-              <th class="p-3">বকেয়া</th>
-              <th class="p-3">স্ট্যাটাস / রিটার্ন</th>
-            </tr>
-          </thead>
-          <tbody id="salesHistoryTable" class="divide-y divide-slate-700/50 text-sm"></tbody>
+          <tbody id="salesTable" class="divide-y divide-slate-700 text-sm"></tbody>
         </table>
       </div>
     </div>
 
   </div>
 
+  <!-- JAVASCRIPT CODE -->
   <script>
-    // LocalStorage Persistent Stores
-    let stock = JSON.parse(localStorage.getItem('premium_cam_stock')) || [];
-    let sales = JSON.parse(localStorage.getItem('premium_cam_sales')) || [];
+    // LocalStorage Persistent Memory
+    let stock = JSON.parse(localStorage.getItem('cam_stock_db')) || [];
+    let sales = JSON.parse(localStorage.getItem('cam_sales_db')) || [];
 
-    function saveState() {
-      localStorage.setItem('premium_cam_stock', JSON.stringify(stock));
-      localStorage.setItem('premium_cam_sales', JSON.stringify(sales));
-      renderTables();
+    function updateStorage() {
+      localStorage.setItem('cam_stock_db', JSON.stringify(stock));
+      localStorage.setItem('cam_sales_db', JSON.stringify(sales));
+      renderUI();
     }
 
-    // Add New Camera Stock
-    function addStockItem() {
+    // 1. BUYING: Add Stock Item
+    function addStock() {
       const model = document.getElementById('inModel').value.trim();
       const serial = document.getElementById('inSerial').value.trim();
       const buyPrice = parseFloat(document.getElementById('inBuyPrice').value);
-      const sellPrice = parseFloat(document.getElementById('inSellPrice').value);
+      const sellPrice = parseFloat(document.getElementById('inSellPrice').value) || buyPrice;
 
-      if (!model || !serial || isNaN(buyPrice) || isNaN(sellPrice)) {
-        alert('অনুগ্রহ করে মডেল, সিরিয়াল নম্বর, কেনা দাম এবং বেচা দাম সঠিকভাবে লিখুন!');
+      if (!model || !serial || isNaN(buyPrice)) {
+        alert('Please fill Model, Serial Number & Buying Price!');
         return;
       }
 
-      // Check serial uniqueness
-      if (stock.some(s => s.serial.toLowerCase() === serial.toLowerCase())) {
-        alert('এই সিরিয়াল নম্বরের ক্যামেরাটি আগেই স্টকে যোগ করা হয়েছে!');
+      // Serial uniqueness check
+      if (stock.some(s => s.serial.toLowerCase() === serial.toLowerCase() && s.status === 'Available')) {
+        alert('This Serial Number is already present in stock!');
         return;
       }
 
@@ -269,239 +223,154 @@
         serial: serial,
         buyPrice: buyPrice,
         sellPrice: sellPrice,
-        status: 'Available' // 'Available' or 'Sold'
+        status: 'Available'
       });
 
+      // Clear input fields
       document.getElementById('inModel').value = '';
       document.getElementById('inSerial').value = '';
       document.getElementById('inBuyPrice').value = '';
       document.getElementById('inSellPrice').value = '';
 
-      saveState();
-      alert('ক্যামেরাটি সফলভাবে স্টকে যোগ হয়েছে!');
+      updateStorage();
+      alert('Camera added to stock successfully!');
     }
 
-    // Auto Fill Sell Price on Selection
-    function autoFillPrice() {
-      const selectedId = parseInt(document.getElementById('saleCamSelect').value);
+    // Auto set selling price when selecting camera
+    function autoPrice() {
+      const selectedId = parseInt(document.getElementById('saleSelect').value);
       const item = stock.find(i => i.id === selectedId);
       if (item) {
-        document.getElementById('customSellPrice').value = item.sellPrice;
+        document.getElementById('customPrice').value = item.sellPrice;
       } else {
-        document.getElementById('customSellPrice').value = '';
+        document.getElementById('customPrice').value = '';
       }
     }
 
-    // Process Sale
+    // 2. SELLING: Process Sale with Serial & Custom Price
     function processSale() {
-      const selectedId = parseInt(document.getElementById('saleCamSelect').value);
+      const selectedId = parseInt(document.getElementById('saleSelect').value);
       const custName = document.getElementById('custName').value.trim();
       const custPhone = document.getElementById('custPhone').value.trim();
-      const customPrice = parseFloat(document.getElementById('customSellPrice').value);
+      const customPrice = parseFloat(document.getElementById('customPrice').value);
       const cash = parseFloat(document.getElementById('cashPaid').value) || 0;
 
       if (!selectedId || !custName || isNaN(customPrice)) {
-        alert('ক্যামেরা সিলেক্ট করুন, কাস্টমারের নাম এবং ফাইনাল বিক্রয়মূল্য লিখুন!');
+        alert('Please select a camera, enter Customer Name and Selling Price!');
         return;
       }
 
       const item = stock.find(i => i.id === selectedId);
-      if (!item || item.status !== 'Available') {
-        alert('নির্বাচিত ক্যামেরাটি স্টকে পাওয়া যাচ্ছে না!');
-        return;
-      }
+      if (!item) return;
 
       const due = customPrice - cash;
 
       // Update Stock Status
       item.status = 'Sold';
 
-      // Insert Sale Record
+      // Record Sales Transaction
       sales.unshift({
         id: Date.now(),
-        stockId: item.id,
         model: item.model,
         serial: item.serial,
         customer: custName,
         phone: custPhone || 'N/A',
-        buyPrice: item.buyPrice,
-        customSellPrice: customPrice,
+        sellPrice: customPrice,
         cashPaid: cash,
-        dueAmount: due > 0 ? due : 0,
-        isReturned: false,
-        date: new Date().toLocaleDateString('bn-BD')
+        dueAmount: due > 0 ? due : 0
       });
 
+      // Clear fields
       document.getElementById('custName').value = '';
       document.getElementById('custPhone').value = '';
-      document.getElementById('customSellPrice').value = '';
+      document.getElementById('customPrice').value = '';
       document.getElementById('cashPaid').value = '';
 
-      saveState();
-      alert('বিক্রি সফলভাবে সেভ করা হয়েছে!');
+      updateStorage();
+      alert('Sale recorded successfully!');
     }
 
-    // Return Camera
-    function returnSale(saleId) {
-      const sale = sales.find(s => s.id === saleId);
-      if (!sale || sale.isReturned) return;
-
-      if (confirm(`সিরিয়াল ${sale.serial} এর (${sale.model}) ক্যামেরাটি কি রিটার্ন গ্রহণ করে স্টকে ব্যাক করতে চান?`)) {
-        sale.isReturned = true;
-        
-        // Return item back to available stock
-        const item = stock.find(i => i.id === sale.stockId);
-        if (item) {
-          item.status = 'Available';
-        }
-
-        saveState();
-      }
-    }
-
-    // Pay Due Amount
+    // Settle Due
     function payDue(saleId) {
       const sale = sales.find(s => s.id === saleId);
-      if (!sale || sale.dueAmount <= 0) return;
+      if (!sale) return;
 
-      const amount = prompt(`${sale.customer} এর মোট বকেয়া ৳${sale.dueAmount}। কত টাকা জমা নিতে চান?`, sale.dueAmount);
-      const paid = parseFloat(amount);
+      const payVal = prompt(`Current Due for ${sale.customer} is ৳${sale.dueAmount}. How much cash received?`, sale.dueAmount);
+      const amount = parseFloat(payVal);
 
-      if (!isNaN(paid) && paid > 0) {
-        if (paid > sale.dueAmount) {
-          alert('বকেয়ার চেয়ে বেশি টাকা গ্রহণ করা যাবে না!');
-          return;
-        }
-        sale.cashPaid += paid;
-        sale.dueAmount -= paid;
-        saveState();
+      if (!isNaN(amount) && amount > 0) {
+        sale.cashPaid += amount;
+        sale.dueAmount = Math.max(0, sale.dueAmount - amount);
+        updateStorage();
       }
     }
 
-    // Render Dashboard & Tables
-    function renderTables() {
+    // 3. RENDER UI & DASHBOARD COUNTERS
+    function renderUI() {
       const availableStock = stock.filter(s => s.status === 'Available');
-      const searchQuery = (document.getElementById('searchStockInput')?.value || '').toLowerCase();
 
-      // 1. Dashboard Totals
-      const totalStockVal = availableStock.reduce((acc, curr) => acc + curr.sellPrice, 0);
-      const totalCashCollected = sales.reduce((acc, curr) => curr.isReturned ? acc : acc + curr.cashPaid, 0);
-      const totalDuePawn = sales.reduce((acc, curr) => curr.isReturned ? acc : acc + curr.dueAmount, 0);
-      const totalSalesValue = sales.reduce((acc, curr) => curr.isReturned ? acc : acc + curr.customSellPrice, 0);
-      const soldCount = sales.filter(s => !s.isReturned).length;
-      const dueClientsCount = sales.filter(s => !s.isReturned && s.dueAmount > 0).length;
+      // Calculate 3 Dashboard Values
+      const totalStockVal = availableStock.reduce((sum, item) => sum + item.buyPrice, 0);
+      const totalStockQty = availableStock.length;
+      const totalDuePawn = sales.reduce((sum, item) => sum + item.dueAmount, 0);
 
+      // Render Counters
       document.getElementById('dashTotalValue').innerText = `৳ ${totalStockVal.toLocaleString('bn-BD')}`;
-      document.getElementById('dashTotalQty').innerText = `স্টক: ${availableStock.length} টি ক্যামেরা`;
-
-      document.getElementById('dashTotalCash').innerText = `৳ ${totalCashCollected.toLocaleString('bn-BD')}`;
+      document.getElementById('dashTotalQty').innerText = `${totalStockQty} Ti`;
       document.getElementById('dashTotalDue').innerText = `৳ ${totalDuePawn.toLocaleString('bn-BD')}`;
-      document.getElementById('dashDueClientsCount').innerText = `${dueClientsCount} জন কাস্টমারের কাছে পাওনা`;
 
-      document.getElementById('dashTotalSalesVal').innerText = `৳ ${totalSalesValue.toLocaleString('bn-BD')}`;
-      document.getElementById('dashSoldQtyCount').innerText = `মোট বিক্রি: ${soldCount} টি`;
-
-      // 2. Populate Dropdown in POS
-      const select = document.getElementById('saleCamSelect');
-      select.innerHTML = '<option value="">-- সিরিয়াল অনুযায়ী ক্যামেরা বেছে নিন --</option>';
+      // Populate Dropdown Options
+      const select = document.getElementById('saleSelect');
+      select.innerHTML = '<option value="">-- Choose Stock Camera --</option>';
       availableStock.forEach(item => {
-        select.innerHTML += `<option value="${item.id}">${item.model} [S/N: ${item.serial}] - ৳${item.sellPrice}</option>`;
+        select.innerHTML += `<option value="${item.id}">${item.model} [S/N: ${item.serial}]</option>`;
       });
 
-      // 3. Render Stock Table
-      const stockBody = document.getElementById('stockTableBody');
-      stockBody.innerHTML = '';
-      
-      const filteredStock = stock.filter(s => s.model.toLowerCase().includes(searchQuery) || s.serial.toLowerCase().includes(searchQuery));
-      
-      if (filteredStock.length === 0) {
-        stockBody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">কোনো ক্যামেরা খুঁজে পাওয়া যায়নি</td></tr>';
+      // Render Stock Table
+      const stockTable = document.getElementById('stockTable');
+      stockTable.innerHTML = '';
+      if (availableStock.length === 0) {
+        stockTable.innerHTML = '<tr><td colspan="4" class="p-3 text-slate-500 text-center">No camera in stock</td></tr>';
       } else {
-        filteredStock.forEach(item => {
-          stockBody.innerHTML += `
-            <tr class="hover:bg-slate-700/30">
+        availableStock.forEach(item => {
+          stockTable.innerHTML += `
+            <tr class="hover:bg-slate-700/50">
               <td class="p-3 font-medium text-white">${item.model}</td>
               <td class="p-3 font-mono text-xs text-blue-400">${item.serial}</td>
-              <td class="p-3 text-slate-400">৳ ${item.buyPrice.toLocaleString('bn-BD')}</td>
-              <td class="p-3 text-emerald-400 font-semibold">৳ ${item.sellPrice.toLocaleString('bn-BD')}</td>
-              <td class="p-3">
-                ${item.status === 'Available' 
-                  ? '<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs px-2.5 py-1 rounded-full">স্টকে আছে</span>' 
-                  : '<span class="bg-slate-700 text-slate-400 text-xs px-2.5 py-1 rounded-full">বিক্রি হয়েছে</span>'}
-              </td>
+              <td class="p-3 text-slate-400">৳ ${item.buyPrice}</td>
+              <td class="p-3 text-emerald-400 font-semibold">৳ ${item.sellPrice}</td>
             </tr>
           `;
         });
       }
 
-      // 4. Render Due Clients Table
-      const dueTable = document.getElementById('dueClientsTable');
-      dueTable.innerHTML = '';
-      const dueSalesList = sales.filter(s => !s.isReturned && s.dueAmount > 0);
-      document.getElementById('dueCountBadge').innerText = `${dueSalesList.length} জনের বকেয়া বাকি`;
-
-      if (dueSalesList.length === 0) {
-        dueTable.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">কারো কাছে বকেয়া পাওনা নেই 🎉</td></tr>';
-      } else {
-        dueSalesList.forEach(sale => {
-          dueTable.innerHTML += `
-            <tr class="hover:bg-slate-700/30">
-              <td class="p-3 font-semibold text-white">${sale.customer}</td>
-              <td class="p-3 text-slate-400 text-xs">${sale.phone}</td>
-              <td class="p-3 text-xs text-slate-300">${sale.model} <span class="text-blue-400">(${sale.serial})</span></td>
-              <td class="p-3 font-bold text-rose-400">৳ ${sale.dueAmount.toLocaleString('bn-BD')}</td>
-              <td class="p-3">
-                <button onclick="payDue(${sale.id})" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-1.5 rounded-lg transition">
-                  <i class="fa-solid fa-money-bill-wave"></i> জমা নিন
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-      }
-
-      // 5. Render Sales History Table
-      const salesBody = document.getElementById('salesHistoryTable');
-      salesBody.innerHTML = '';
-
+      // Render Sales & Due Table
+      const salesTable = document.getElementById('salesTable');
+      salesTable.innerHTML = '';
       if (sales.length === 0) {
-        salesBody.innerHTML = '<tr><td colspan="7" class="p-4 text-center text-slate-500">এখনো কোনো বিক্রি রেকর্ড করা হয়নি</td></tr>';
+        salesTable.innerHTML = '<tr><td colspan="6" class="p-3 text-slate-500 text-center">No sales yet</td></tr>';
       } else {
-        sales.forEach(sale => {
-          salesBody.innerHTML += `
-            <tr class="hover:bg-slate-700/30 ${sale.isReturned ? 'opacity-50 line-through' : ''}">
-              <td class="p-3 text-xs text-slate-400">${sale.date}</td>
-              <td class="p-3 font-medium text-white">${sale.customer}</td>
-              <td class="p-3 text-xs text-slate-300">${sale.model} <br><span class="text-blue-400 font-mono">${sale.serial}</span></td>
-              <td class="p-3 font-semibold text-amber-400">৳ ${sale.customSellPrice.toLocaleString('bn-BD')}</td>
-              <td class="p-3 text-emerald-400 font-semibold">৳ ${sale.cashPaid.toLocaleString('bn-BD')}</td>
-              <td class="p-3 font-semibold ${sale.dueAmount > 0 && !sale.isReturned ? 'text-rose-400' : 'text-slate-400'}">৳ ${sale.dueAmount.toLocaleString('bn-BD')}</td>
+        sales.forEach(s => {
+          salesTable.innerHTML += `
+            <tr class="hover:bg-slate-700/50">
+              <td class="p-3 text-white font-medium">${s.customer} <br><span class="text-xs text-slate-400">${s.phone}</span></td>
+              <td class="p-3 text-xs text-slate-300">${s.model} <br><span class="text-blue-400 font-mono">${s.serial}</span></td>
+              <td class="p-3 text-emerald-400">৳ ${s.sellPrice}</td>
+              <td class="p-3 text-slate-300">৳ ${s.cashPaid}</td>
+              <td class="p-3 font-bold ${s.dueAmount > 0 ? 'text-rose-400' : 'text-slate-500'}">৳ ${s.dueAmount}</td>
               <td class="p-3">
-                ${sale.isReturned 
-                  ? '<span class="text-rose-400 text-xs font-bold border border-rose-500/30 px-2 py-0.5 rounded">রিটার্নড</span>' 
-                  : `<button onclick="returnSale(${sale.id})" class="bg-amber-600/20 text-amber-400 border border-amber-500/30 hover:bg-amber-600/40 text-xs px-2.5 py-1 rounded-lg transition">রিটার্ন</button>`
-                }
+                ${s.dueAmount > 0 
+                  ? `<button onclick="payDue(${s.id})" class="bg-rose-600/30 text-rose-300 border border-rose-500/30 hover:bg-rose-600/50 text-xs px-2.5 py-1 rounded-lg">Pay Due</button>` 
+                  : `<span class="text-xs text-emerald-400 font-bold">Paid</span>`}
               </td>
             </tr>
           `;
         });
       }
-
     }
 
-    // Export Data Backup
-    function exportData() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({ stock, sales }));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `Camera_ERP_Backup_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
-    }
-
-    // Initial Load
-    renderTables();
+    // Initialize Page
+    renderUI();
   </script>
 </body>
 </html>
